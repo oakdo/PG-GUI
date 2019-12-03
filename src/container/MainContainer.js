@@ -1,4 +1,5 @@
 import React, {Component} from 'react'; 
+import TableDisplay from '../components/TableDisplay'
 
 class MainContainer extends Component {
     constructor(props){
@@ -33,6 +34,8 @@ class MainContainer extends Component {
                 <input id='table_name' style={inputTableStyle} placeholder="people"></input>
                 <button onClick={()=>this.getTable()}>Get Data</button>
             </span>
+            <h2>Table Name</h2>
+            <TableDisplay></TableDisplay>
             </div>
         );
     }

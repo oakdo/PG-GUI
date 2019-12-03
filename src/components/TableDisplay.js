@@ -73,7 +73,6 @@ class TableDisplay extends React.Component {
 
     return(
       <div>
-      <h1>hello</h1>
         {headersArr}
         {rowsArr}
         
