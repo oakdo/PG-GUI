@@ -1,5 +1,5 @@
 import React, {Component} from 'react'; 
-import TableDisplay from '../components/TableDisplay'
+import TableDisplay from '../components/TableDisplay';
 
 
 class MainContainer extends Component {

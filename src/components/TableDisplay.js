@@ -1,9 +1,12 @@
 import React from 'react';
+import Row from './Rows.js';
+import TableHeader from './TableHeader.js';
 
 class TableDisplay extends React.Component {
   constructor(props){
     super(props)
-    this.state = {data: [{ _id: 81,
+    this.state = {data: [
+      { _id: 81,
       name: 'Raymus Antilles',
       mass: '79',
       hair_color: 'brown',
@@ -52,30 +55,17 @@ class TableDisplay extends React.Component {
   }
 
   render(){
-    const columns = Object.keys(this.state.data[0]);
-    
-      const headersArr = [];
-      columns.forEach((val, index) => {
-        headersArr.push(<input placeholder={val} type="text" name={val}></input>)
-      });
-
+      const lengthRow = this.state.data.length;
       const rowsArr = [];
-      this.state.data.forEach((val, index) => {
-        const row = Object.values(val);
-        console.log(row)
-        row.forEach((el, index) => {
-          console.log('rowforEach', el)
-          rowsArr.push(<input placeholder={el} type="text" name={el}></input>)
-        })
-      })
+      
+      for(let i = 0; i < lengthRow; i += 1) {
+          rowsArr.push(<Row key={i + '_row'} data={this.state.data[i]} />)
+      }
     
-    
-
     return(
       <div>
-        {headersArr}
+        <TableHeader keys={Object.keys(this.state.data[0])}/>
         {rowsArr}
-        
       </div>
     )
   }
