@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TableDisplay from './components/TableDisplay'
+import MainContainer from './container/MainContainer'
 
 ReactDOM.render(
   <div>
-    <TableDisplay></TableDisplay>
+  <MainContainer/> 
   </div>,
   document.getElementById('root')
 );
