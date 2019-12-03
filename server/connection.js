@@ -12,6 +12,7 @@ const pool = new Pool({
     connectionString: PG_URI
   });
   res.locals.pool=pool;
+  pool.query("select tablename from pg_catalog.pg_tables where schemaname != 'pg_catalog' AND schemaname != 'information_scehma'", (err,result)=> console.log("result",result.rows))
   return next();
 }
 
