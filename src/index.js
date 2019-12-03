@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MainContainer from './container/MainContainer'
 
 ReactDOM.render(
-  <div>Hello World!</div>,
+  <div>
+  <MainContainer/> 
+  </div>,
   document.getElementById('root')
 );
