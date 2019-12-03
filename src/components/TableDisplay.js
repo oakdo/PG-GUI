@@ -55,16 +55,16 @@ class TableDisplay extends React.Component {
   }
 
   render(){
-      const lengthRow = this.state.data.length;
+      const lengthRow = this.props.data.length;
       const rowsArr = [];
       
       for(let i = 0; i < lengthRow; i += 1) {
-          rowsArr.push(<Row key={i + '_row'} data={this.state.data[i]} />)
+          rowsArr.push(<Row key={i + '_row'} data={this.props.data[i]} />)
       }
     
     return(
       <div>
-        <TableHeader keys={Object.keys(this.state.data[0])}/>
+        <TableHeader keys={Object.keys(this.props.data[0])}/>
         {rowsArr}
       </div>
     )
