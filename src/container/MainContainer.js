@@ -5,7 +5,7 @@ import TableDisplay from '../components/TableDisplay';
 class MainContainer extends Component {
     constructor(props){
         super(props)
-        this.state ={ data:[], uri:'',tableNames:[] }
+        this.state ={ data:[], uri:'',tableNames:[], isLoading: true, currentTable:'' }
         this.getTable= this.getTable.bind(this);
         this.getTableNames = this.getTableNames.bind(this);
     }
@@ -21,7 +21,7 @@ class MainContainer extends Component {
            body:JSON.stringify(data)
        }).then(res => res.json())
         .then(result => {
-            this.setState({data:result})
+            this.setState({data:result, isLoading:false, currentTable:tableName})
         })  
     }
     getTableNames(){
@@ -51,7 +51,13 @@ class MainContainer extends Component {
         for(let i=0; i<this.state.tableNames.length; i++){
             tableOptions.push(<option value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>)
         }
+
+    let tableArray = [];
         
+        if (this.state.isLoading !== true){
+            tableArray = [(<TableDisplay data={this.state.data}/>)];
+            };
+
         return(
             <div>
             <span>
@@ -61,15 +67,15 @@ class MainContainer extends Component {
             </span>
             <br/>
             <span>
-                <label>Table Name:</label>
+                <label>Table Name</label>
                 <select id='selectedTable' style={inputTableStyle}>
                 {tableOptions}
                 </select>
                 {/* <input id='table_name' style={inputTableStyle} placeholder="people"></input> */}
                 <button onClick={()=>this.getTable()}>Get Data</button>
             </span>
-            <h2>Table Name</h2>
-            <TableDisplay></TableDisplay>
+            <h2>{this.state.currentTable}</h2>
+            {tableArray}
             </div>
         );
     }
