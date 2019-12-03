@@ -10,9 +10,8 @@ class InputCell extends Component {
   }
 
   render () {
-
     return (
-      <input placeholder={this.props.data} type="text" name='name'></input>
+      <input placeholder={this.props.data} type="text" name={this.props.column} onKeyPress={this.props.onEnter}></input>
     );
   }
 }
