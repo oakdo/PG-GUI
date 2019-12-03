@@ -10,9 +10,12 @@ module.exports = {
     mode: 'development',
     devServer: {
         // contentBase: '/dist'
-        publicPath: '/',  
+        publicPath: '/dist',  
         compress: true,
         port: 8000,
+        proxy: {
+            '/server/': 'http://localhost:3000'
+        },
     },
     module: {
         rules: [ 
