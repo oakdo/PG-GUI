@@ -16,7 +16,12 @@ app.get('/', function (req, res) {
     res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
   })
 
-app.post('/server/all',
+app.post('/server/tablenames',
+  connectionPoint.createConnection, file.getTableNames,(req,res) =>{
+  return res.status(200).json(res.locals.tableName);
+})
+
+app.post('/server/table',
   connectionPoint.createConnection,file.getData, (req,res) =>{
   return res.status(200).json(res.locals.info);
 })
