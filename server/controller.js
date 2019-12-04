@@ -29,16 +29,34 @@ file.getTableNames = (req, res, next) => {
    })
  }
 
+ file.delete = (req, res, next) => {
+  const db = res.locals.pool;
+    // write code here
+    const { queryString } = req.body
+   
+    db.query(queryString, (err, result)=>{
+      console.log('result:', result)
+
+      if (err) {
+        return next({log: err.stack, message: "Error executing query in delete"}) 
+      }
+      res.locals.delete = result.rows
+      console.log('res.locals.delete:', res.locals.delete)
+
+     return next();
+   })
+ }
 
 file.getData = (req, res, next) => {
 const db = res.locals.pool;
   // write code here
-  const {tableName} = req.body;
+  const { queryString } = req.body
   //add as an variable
 
-  const queryString='select * from '+tableName;
+  // const queryString='select * from '+tableName;
 
   db.query(queryString,(err, result)=>{
+    
     if (err) {
       return next({log: err.stack, message: "Error executing query in getData"}) 
     }
@@ -49,7 +67,15 @@ const db = res.locals.pool;
 
 file.create = (req, res, next) => {
   const db = res.locals.pool;
-  const {tableName} = req.body;
+  const { queryString } = req.body;
+
+  db.query(queryString,(err, result)=>{
+    if (err) {
+      return next({log: err.stack, message: "Error executing query in create"}) 
+    }
+    res.locals.create = result.rows;
+   return next();
+  })
 }
 
 module.exports = file;

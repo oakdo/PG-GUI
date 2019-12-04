@@ -46,6 +46,10 @@ app.post('/server/update', connectionPoint.createConnection, file.update, (req, 
 app.post('/server/create', connectionPoint.createConnection, file.create, (req, res) => {
   return res.status(200).json(res.locals.create)
 })
+
+app.delete('/server/delete', connectionPoint.createConnection, file.delete, (req, res) => {
+  return res.status(200).json(res.locals.delete)
+})
   
 app.listen(PORT, ()=> {console.log(`Listening on Port ${PORT}`)})
 

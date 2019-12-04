@@ -2,20 +2,80 @@ import React from 'react';
 import TableHeader from './TableHeader.js'
 
 class CreatePopup extends React.Component {  
+  constructor(props){
+    super(props)
+
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit (event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      const getDataObj= {}
+
+      for(let i = 1; i < this.props.keys.length ; i += 1){
+        let inputData = data.get(this.props.keys[i]);
+        
+        if(inputData !== '') {
+          getDataObj[this.props.keys[i]] = inputData;
+        }
+
+      }     
+
+      let columnNames = '';
+      let columnValues = '';
+
+      for (let keys in getDataObj) {
+        
+        columnNames += keys + ', ';
+        columnValues += `'${getDataObj[keys]}'` + ', ';
+      }
+
+      columnValues = columnValues.trim();
+      columnNames = columnNames.trim();
+
+      columnValues = columnValues.slice(0, -1);
+      columnNames = columnNames.slice(0, -1);
+
+
+      
+      console.log(columnValues, columnNames);
+      
+      let queryString = `INSERT INTO ${this.props.tableName} (${columnNames}) values (${columnValues})`;
+      const uri = this.props.uri;
+
+      console.log('THIS IS QUERYSTRNG', uri, queryString);
+
+      fetch('/server/create', {
+        method: 'POST',
+        body: JSON.stringify({ uri, queryString }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(data => {
+        console.log('post request on submit has completed');
+        this.props.reRender();
+      });
+    }
+  
+
   render() {  
+    const keysInputBoxes = [];
+    for(let i = 1; i < this.props.keys.length ; i += 1) {
+      keysInputBoxes.push(<input type="text" tname={this.props.tableName} key={i + '_inputBoxes'} uri={this.props.uri} id={this.props.keys[i]} name={this.props.keys[i]} placeholder={this.props.keys[i]} />)
+    }
+
     return (  
       <div>
         <div>   
           <h1>Create Row</h1> 
-          <TableHeader/>
-            {/* <form>
-              Coloumn1: <input type="text" name=""/>
-              Coloumn2: <input type="text" name=""/><br/>
-              Coloumn3: <input type="number" name=""/><br/>
-              Coloumn4: <input type="url" name=""/><br/><br/>
-              <input type="submit" value="submit"/>
-            </form>  */}
-            <button onClick={this.props.closePopup}>close me</button> 
+          {/* <TableHeader keys={this.props.keys} tableName={this.props.tableName} uri={this.props.uri}/> */}
+            <form onSubmit={this.onSubmit}>
+              {keysInputBoxes}
+              <br/><br/>
+              <button>Submit</button>
+            </form> 
+            <button onClick={this.props.closePopup}>Close</button> 
         </div> 
       </div>  
     )};  
