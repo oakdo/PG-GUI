@@ -15,6 +15,21 @@ file.getTableNames = (req, res, next) => {
    })
  }
 
+ file.update = (req, res, next) => {
+  const db = res.locals.pool;
+    // write code here
+    const { queryString } = req.body
+   
+    db.query(queryString, (err, result)=>{
+      if (err) {
+        return next({log: err.stack, message: "Error executing query in update"}) 
+      }
+      res.locals.new = result.rows
+     return next();
+   })
+ }
+
+
 file.getData = (req, res, next) => {
 const db = res.locals.pool;
   // write code here

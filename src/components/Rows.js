@@ -16,11 +16,27 @@ class Row extends Component {
   onEnter(event){
     if(event.key === 'Enter'){
       const newValue = event.target.value;
-      const dataObject = this.props.data;
-      const inputCellColumn = event.target.name;
-      
+      const primaryKey = this.props.data._id;
+      const columnName = event.target.name;
+      let queryString; 
+      if(isNaN(newValue)) {
+        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = '${newValue}' WHERE _id = ${primaryKey}`
+      }
+      else{
+        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = ${newValue} WHERE _id = ${primaryKey}`
+      }
+      const uri = this.props.uri
 
-      const queryString = `UPDATE people SET `
+      console.log('THIS IS QUERYSTRNG', uri, queryString)
+
+      fetch('/server/update', {
+        method: 'POST',
+        body: JSON.stringify({uri,queryString}),
+        headers: {
+          'Content-Type' : 'application/json'
+        }
+      })
+
     }
 
   }

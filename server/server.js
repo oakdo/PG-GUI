@@ -11,6 +11,19 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/dist',express.static(path.join(__dirname,'../dist')))
+
+
+app.use((req, res, next) => {
+  console.log(
+    `***************************************************************************************
+    CHAOS FLOW TEST --- METHOD:${req.method}, PATH: ${
+      req.url
+    }, BODY: ${JSON.stringify(req.body)}
+    ***************************************************************************************`
+  );
+  return next();
+});
+
 app.get('/', function (req, res) {
     //req.body should have uri
     res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
@@ -24,6 +37,10 @@ app.post('/server/tablenames',
 app.post('/server/table',
   connectionPoint.createConnection,file.getData, (req,res) =>{
   return res.status(200).json(res.locals.info);
+})
+
+app.post('/server/update', connectionPoint.createConnection, file.update, (req, res) => {
+  return res.status(200).json(res.locals.new)
 })
   
 app.listen(PORT, ()=> {console.log(`Listening on Port ${PORT}`)})
