@@ -1,17 +1,25 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class HeaderCell extends Component {
   constructor(props) {
-    super(props) 
+    super(props);
 
-    this.state = {
-
-    }
+    this.state = {};
   }
 
-  render () {
+  render() {
+    const tableHeaderStyle = {
+      background: '#d6e0f5',
+      fontSize: '12px'
+    };
     return (
-      <input placeholder={this.props.data} type="text" name={this.props.column} onClick={this.props.handleEvent}></input>
+      <input
+        placeholder={this.props.data}
+        type="text"
+        name={this.props.column}
+        onClick={this.props.handleEvent}
+        style={tableHeaderStyle}
+      ></input>
     );
   }
 }

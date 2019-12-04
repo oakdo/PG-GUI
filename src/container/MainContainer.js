@@ -28,7 +28,7 @@ class MainContainer extends Component {
     //we need
     const uri = this.state.uri;
     const tableName = document.querySelector('#selectedTable').value;
-    const queryString='select * from '+tableName;
+    const queryString = 'select * from ' + tableName;
     const data = { uri, queryString };
     // const data = { uri, tableName };
     fetch('/server/table', {
@@ -70,11 +70,10 @@ class MainContainer extends Component {
     const tableName = this.state.currentTable;
     const uri = this.state.uri;
     let queryString;
-    if(newString!== undefined){
-      queryString=newString;
-    }
-    else{
-      queryString='select * from '+tableName;
+    if (newString !== undefined) {
+      queryString = newString;
+    } else {
+      queryString = 'select * from ' + tableName;
     }
     // console.log('**********************************', queryString)
     const tableData = { uri, queryString };
@@ -83,7 +82,7 @@ class MainContainer extends Component {
     fetch('/server/tablenames', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({uri})
+      body: JSON.stringify({ uri })
     })
       .then(res => res.json())
       .then(result => {
@@ -113,29 +112,39 @@ class MainContainer extends Component {
       });
   }
 
-    //************************************************* deleteRow *****************************/
-   
-    deleteRow(){
-        const id = document.querySelector('#deleteRow').value;
-        const queryString = `DELETE FROM ${this.state.currentTable} WHERE _id = ${id}`
-        const uri = this.state.uri;
-        fetch('/server/delete',{
-            method: 'DELETE',
-            headers:{'Content-Type': 'application/json'},
-            body:JSON.stringify({uri, queryString})
-        }).then(()=>{this.reRender()})
+  //************************************************* deleteRow *****************************/
+
+  deleteRow() {
+    const id = document.querySelector('#deleteRow').value;
+    const queryString = `DELETE FROM ${this.state.currentTable} WHERE _id = ${id}`;
+    const uri = this.state.uri;
+    fetch('/server/delete', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uri, queryString })
+    }).then(() => {
+      this.reRender();
+    });
+  }
+
+  render() {
+    const boxShadow = {
+      boxShadow:
+        '0px 0px 20px rgba(0,0,0,0.10), 0px 10px 20px rgba(0,0,0,0.05), 0px 20px 20px rgba(0,0,0,0.05), 0px 30px 20px rgba(0,0,0,0.05)',
+      display: 'inline-block'
+    };
+    const inputStyle = { margin: '10px', width: '500px' };
+    const inputTableStyle = { margin: '10px', width: '100px' };
+    const tableOptions = [];
+    for (let i = 0; i < this.state.tableNames.length; i++) {
+      tableOptions.push(
+        <option value={this.state.tableNames[i]}>
+          {this.state.tableNames[i]}
+        </option>
+      );
     }
-    
 
-render(){
-        const inputStyle={margin:'10px', width: "500px",}
-        const inputTableStyle={margin:'10px', width: "100px",}
-        const tableOptions =[]
-        for(let i=0; i<this.state.tableNames.length; i++){
-            tableOptions.push(<option value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>)
-        }
-
-    let tableArray = [];  
+    let tableArray = [];
     if (this.state.isLoading !== true) {
       tableArray = [
         <TableDisplay
@@ -148,7 +157,7 @@ render(){
     }
 
     return (
-      <div>
+      <div class="flex">
         <span>
           <label>Place URI Here:</label>
           <input
@@ -166,16 +175,20 @@ render(){
           </select>
           <button onClick={() => this.getTable()}>Get Data</button>
         </span>
-        <br/>
-            <span><label>Delete a Row (Insert _id):</label>
-            <input style={inputTableStyle} id='deleteRow'></input>
-            <button onClick={this.deleteRow}>Delete</button>
-            </span>
+        <br />
+        <span>
+          <label>Delete a Row (Insert _id):</label>
+          <input style={inputTableStyle} id="deleteRow"></input>
+          <button onClick={this.deleteRow}>Delete</button>
+        </span>
         <h2>{this.state.currentTable}</h2>
-        {tableArray}
+        <div style={boxShadow}>{tableArray}</div>
       </div>
     );
   }
 }
 
-export default connect(null,mapDispatchToProps)(MainContainer);
+export default connect(
+  null,
+  mapDispatchToProps
+)(MainContainer);
