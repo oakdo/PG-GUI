@@ -125,30 +125,36 @@ class MainContainer extends Component {
    // Delete row method
     deleteRow(){
         const id = document.querySelector('#deleteRow').value;
-        const queryString = `DELETE FROM ${this.state.currentTable} WHERE _id = ${id}`
+        const queryString = `DELETE FROM ${this.state.currentTable} WHERE id = ${id}`
         const uri = this.state.uri;
+
         fetch('/server/delete',{
             method: 'DELETE',
             headers:{'Content-Type': 'application/json'},
             body:JSON.stringify({uri, queryString})
-        }).then(()=>{this.reRender()})
+        }).then(()=>{
+          console.log('hi')
+          this.reRender()})
     }
     
 
     // END OF METHODS // 
 
 render(){
-        const inputStyle={margin:'10px', width: "500px",}
-        const inputTableStyle={margin:'10px', width: "100px",}
-        const tableOptions =[]
-        for(let i=0; i<this.state.tableNames.length; i++){
-            tableOptions.push(<option value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>)
-        }
+    const inputStyle={margin:'10px', width: "500px",}
+    const inputTableStyle={margin:'10px', width: "100px",}
+    const tableOptions =[]
+    
+    for(let i=0; i<this.state.tableNames.length; i++){
+      tableOptions.push(<option key={i + '_tableOptions'} value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>)
+    }
 
-    let tableArray = [];  
+    let tableArray = []; 
+
     if (this.state.isLoading !== true) {
       tableArray = [
         <TableDisplay
+          key={this.state.currentTable}
           tableName={this.state.currentTable}
           uri={this.state.uri}
           data={this.state.data}
@@ -177,7 +183,7 @@ render(){
           <button onClick={() => this.getTable()}>Get Data</button>
         </span>
         <br/>
-            <span><label>Delete a Row (Insert _id):</label>
+            <span><label>Delete a Row (Insert id):</label>
             <input style={inputTableStyle} id='deleteRow'></input>
             <button onClick={this.deleteRow}>Delete</button>
             </span>
