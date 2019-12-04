@@ -123,7 +123,7 @@ class MainContainer extends Component {
             method: 'DELETE',
             headers:{'Content-Type': 'application/json'},
             body:JSON.stringify({uri, queryString})
-        })
+        }).then(()=>{this.reRender()})
     }
     
 
