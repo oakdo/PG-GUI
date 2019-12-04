@@ -22,7 +22,7 @@ class TableDisplay extends React.Component {
   render(){
       const lengthRow = this.props.data.length;
       const rowsArr = [];
-      // console.log('PROPS INSIDE PARENT', this.props)
+
       
       for(let i = 0; i < lengthRow; i += 1) {
           rowsArr.push(<Row key={i + '_row'} reRender={this.props.reRender} tableName={this.props.tableName} uri={this.props.uri} data={this.props.data[i]} />)
