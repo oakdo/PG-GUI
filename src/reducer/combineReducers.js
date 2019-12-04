@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 // import all reducers here
-import Reducers from './reducers.js.js';
+import Reducers from './reducers.js';
 
 
 // combine reducers

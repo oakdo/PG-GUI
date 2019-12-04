@@ -1,5 +1,11 @@
 import React, {Component} from 'react'; 
 import TableDisplay from '../components/TableDisplay';
+import { connect } from 'react-redux';
+import { update } from '../actions/actions.js'
+
+const mapDispatchToProps = (dispatch) => ({
+    update: () => dispatch(update())
+})
 
 
 class MainContainer extends Component {
@@ -55,7 +61,7 @@ class MainContainer extends Component {
     let tableArray = [];
         
         if (this.state.isLoading !== true){
-            tableArray = [(<TableDisplay data={this.state.data}/>)];
+            tableArray = [(<TableDisplay tableName={this.state.currentTable} uri={this.state.uri} data={this.state.data}/>)];
             };
 
         return(
@@ -81,4 +87,5 @@ class MainContainer extends Component {
     }
 }
 
- export default MainContainer;
+
+ export default connect(null, mapDispatchToProps)(MainContainer)

@@ -1,4 +1,4 @@
-import * as types from '../src/constant/actionTypes.js.js';
+import * as types from '../constant/actionTypes';
 
 
 const initialState = {
@@ -6,7 +6,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  switch (action.types) {
+  switch (action.type) {
     case 'UPDATE_TYPE': 
     state.count += 1;
 
