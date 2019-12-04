@@ -76,7 +76,7 @@ class MainContainer extends Component {
     else{
       queryString='select * from '+tableName;
     }
-    
+    // console.log('**********************************', queryString)
     const tableData = { uri, queryString };
     this.setState({ isLoading: true });
 
