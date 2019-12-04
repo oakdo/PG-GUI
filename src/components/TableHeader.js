@@ -19,13 +19,7 @@ class TableHeader extends Component {
    console.log(queryString)
 
 
-   fetch('/server/update', {
-    method: 'POST',
-    body: JSON.stringify({uri,queryString}),
-    headers: {
-      'Content-Type' : 'application/json'
-    }
-  })
+   this.props.reRender(queryString)
   }
 
 
