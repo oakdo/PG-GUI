@@ -2,11 +2,14 @@ const connectionPoint = {};
 const { Pool } = require('pg'); 
 
 connectionPoint.createConnection = (req, res, next) => {
-  //grabbing the uri connection string to connect with 
+  //Grab URI from POST request at input form
   let {uri}=req.body;
 
+
+// URI to TEST
 //uri='postgres://gymyqkck:KDN5_PWumJO6UorMKuex8LLGBsTlISs8@salt.db.elephantsql.com:5432/gymyqkck'
 
+// Connect to pool with URI from POST request
 const pool = new Pool({
     connectionString: uri
   });

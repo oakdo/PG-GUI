@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import TableDisplay from '../components/TableDisplay';
 import { connect } from 'react-redux';
 import { update } from '../actions/actions.js';
-import { runInThisContext } from 'vm';
 
 const mapDispatchToProps = dispatch => ({
   update: () => dispatch(update())
 });
 
+// Create container. This is the main parent.
 class MainContainer extends Component {
   constructor(props) {
     super(props);
@@ -23,18 +23,21 @@ class MainContainer extends Component {
     this.reRender = this.reRender.bind(this);
     this.deleteRow = this.deleteRow.bind(this);
   }
-
+  // The following are METHODS used THROUGHOUT the APP /// 
+  // There are only a few methods not contained in here. 
+  // update method which was dispatched to here for fun/learning. and a eventHandler on HeaderCell file.
   getTable() {
-    //we need
+    // Get required data to build queryString to query database
     const uri = this.state.uri;
     const tableName = document.querySelector('#selectedTable').value;
     const queryString = 'select * from ' + tableName;
     const data = { uri, queryString };
-    // const data = { uri, tableName };
+    
+    // send URI and queryString in a post request
     fetch('/server/table', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data) 
     })
       .then(res => res.json())
       .then(result => {
@@ -66,18 +69,25 @@ class MainContainer extends Component {
       });
   }
 
+  // This method is called throughout the APP to reRender after doing something
   reRender(newString) {
     const tableName = this.state.currentTable;
     const uri = this.state.uri;
     let queryString;
-    if (newString !== undefined) {
-      queryString = newString;
-    } else {
-      queryString = 'select * from ' + tableName;
+
+    // If no personalised query is send as an arg do normal default query
+    if(newString!== undefined){
+      queryString=newString;
+    }
+    else{
+      queryString='select * from '+ tableName;
     }
     // console.log('**********************************', queryString)
     const tableData = { uri, queryString };
     this.setState({ isLoading: true });
+
+    // First fetch is to get tableNames. sending a post request of the URI of the DB.
+    // Second fetch request is to get the table specifying the tablename from the DB.
 
     fetch('/server/tablenames', {
       method: 'POST',
@@ -112,42 +122,40 @@ class MainContainer extends Component {
       });
   }
 
-  //************************************************* deleteRow *****************************/
+   // Delete row method
+    deleteRow(){
+        const id = document.querySelector('#deleteRow').value;
+        const queryString = `DELETE FROM ${this.state.currentTable} WHERE id = ${id}`
+        const uri = this.state.uri;
 
-  deleteRow() {
-    const id = document.querySelector('#deleteRow').value;
-    const queryString = `DELETE FROM ${this.state.currentTable} WHERE _id = ${id}`;
-    const uri = this.state.uri;
-    fetch('/server/delete', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ uri, queryString })
-    }).then(() => {
-      this.reRender();
-    });
-  }
+        fetch('/server/delete',{
+            method: 'DELETE',
+            headers:{'Content-Type': 'application/json'},
+            body:JSON.stringify({uri, queryString})
+        }).then(()=>{
+          console.log('hi')
+          this.reRender()})
+    }
+    
 
-  render() {
-    const boxShadow = {
-      boxShadow:
-        '0px 0px 20px rgba(0,0,0,0.10), 0px 10px 20px rgba(0,0,0,0.05), 0px 20px 20px rgba(0,0,0,0.05), 0px 30px 20px rgba(0,0,0,0.05)',
-      display: 'inline-block'
-    };
-    const inputStyle = { margin: '10px', width: '500px' };
-    const inputTableStyle = { margin: '10px', width: '100px' };
-    const tableOptions = [];
-    for (let i = 0; i < this.state.tableNames.length; i++) {
-      tableOptions.push(
-        <option value={this.state.tableNames[i]}>
-          {this.state.tableNames[i]}
-        </option>
-      );
+    // END OF METHODS // 
+
+render(){
+    const inputStyle={margin:'10px', width: "500px",}
+    const inputTableStyle={margin:'10px', width: "100px",}
+    const tableOptions =[]
+
+    
+    for(let i=0; i<this.state.tableNames.length; i++){
+      tableOptions.push(<option key={i + '_tableOptions'} value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>)
     }
 
-    let tableArray = [];
+    let tableArray = []; 
+
     if (this.state.isLoading !== true) {
       tableArray = [
         <TableDisplay
+          key={this.state.currentTable}
           tableName={this.state.currentTable}
           uri={this.state.uri}
           data={this.state.data}
@@ -163,7 +171,7 @@ class MainContainer extends Component {
           <input
             id="uri"
             style={inputStyle}
-            placeholder="progres:!!32e"
+            placeholder="progres://"
           ></input>
           <button onClick={() => this.getTableNames()}>Get Tables</button>
         </span>
@@ -175,14 +183,13 @@ class MainContainer extends Component {
           </select>
           <button onClick={() => this.getTable()}>Get Data</button>
         </span>
-        <br />
-        <span>
-          <label>Delete a Row (Insert _id):</label>
-          <input style={inputTableStyle} id="deleteRow"></input>
-          <button onClick={this.deleteRow}>Delete</button>
-        </span>
+        <br/>
+            <span><label>Delete a Row (Insert id):</label>
+            <input style={inputTableStyle} id='deleteRow'></input>
+            <button onClick={this.deleteRow}>Delete</button>
+            </span>
         <h2>{this.state.currentTable}</h2>
-        <div style={boxShadow}>{tableArray}</div>
+        <div>{tableArray}</div>
       </div>
     );
   }

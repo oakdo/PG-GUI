@@ -1,3 +1,8 @@
+// WARNING // THIS FILE IS NOT BEING USED 
+// Redux is not implemented yet, all methods used on react should have been reducers
+
+
+
 import { combineReducers } from 'redux';
 
 // import all reducers here
