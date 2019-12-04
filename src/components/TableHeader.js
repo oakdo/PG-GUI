@@ -1,3 +1,6 @@
+// This component creates the row containing each cell with column names
+
+
 import React, {Component} from 'react';
 import HeaderCell from './HeaderCells.js';
 

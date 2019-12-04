@@ -1,6 +1,22 @@
-
+// MIDDLEWARES
 const file = {};
- 
+
+// Get table data from database
+file.getData = (req, res, next) => {
+const db = res.locals.pool;
+
+  const { queryString } = req.body
+  db.query(queryString,(err, result)=>{
+    
+    if (err) {
+      return next({log: err.stack, message: "Error executing query in getData"}) 
+    }
+    res.locals.info = result.rows;
+   return next();
+ })
+}
+
+// Get table names middleware to display on dropdown menu after fetching database
 file.getTableNames = (req, res, next) => {
   const db = res.locals.pool;
     // write code here
@@ -15,6 +31,7 @@ file.getTableNames = (req, res, next) => {
    })
  }
 
+ // Update/Patch Middleware 
  file.update = (req, res, next) => {
   const db = res.locals.pool;
     // write code here
@@ -29,6 +46,7 @@ file.getTableNames = (req, res, next) => {
    })
  }
 
+ // Delete middleware
  file.delete = (req, res, next) => {
   const db = res.locals.pool;
     // write code here
@@ -47,23 +65,6 @@ file.getTableNames = (req, res, next) => {
    })
  }
 
-file.getData = (req, res, next) => {
-const db = res.locals.pool;
-  // write code here
-  const { queryString } = req.body
-  //add as an variable
-
-  // const queryString='select * from '+tableName;
-
-  db.query(queryString,(err, result)=>{
-    
-    if (err) {
-      return next({log: err.stack, message: "Error executing query in getData"}) 
-    }
-    res.locals.info = result.rows;
-   return next();
- })
-}
 
 file.create = (req, res, next) => {
   const db = res.locals.pool;

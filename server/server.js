@@ -5,27 +5,25 @@ const path = require('path');
 const file = require('./controller')
 const connectionPoint = require('./connection.js').connectionPoint
 const bodyParser = require('body-parser');
-// const
-// let uri;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/dist',express.static(path.join(__dirname,'../dist')))
 
 
-app.use((req, res, next) => {
-  console.log(
-    `***************************************************************************************
-    CHAOS FLOW TEST --- METHOD:${req.method}, PATH: ${
-      req.url
-    }, BODY: ${JSON.stringify(req.body)}
-    ***************************************************************************************`
-  );
-  return next();
-});
+// CHAOS FLOW
+// app.use((req, res, next) => {
+//   console.log(
+//     `***************************************************************************************
+//     CHAOS FLOW TEST --- METHOD:${req.method}, PATH: ${
+//       req.url
+//     }, BODY: ${JSON.stringify(req.body)}
+//     ***************************************************************************************`
+//   );
+//   return next();
+// });
 
 app.get('/', function (req, res) {
-    //req.body should have uri
     res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
   })
 
