@@ -14,6 +14,7 @@ class MainContainer extends Component {
         this.state ={ data:[], uri:'',tableNames:[], isLoading: true, currentTable:'' }
         this.getTable= this.getTable.bind(this);
         this.getTableNames = this.getTableNames.bind(this);
+        this.deleteRow = this.deleteRow.bind(this);
     }
 
     getTable(){
@@ -49,7 +50,24 @@ class MainContainer extends Component {
             this.setState({tableNames:titlesArray})
         })  
     }
-        
+
+    //************************************************* deleteRow *****************************/
+   
+    deleteRow(){
+        const id = document.querySelector('#deleteRow').value;
+        const queryString = `DELETE FROM ${this.state.currentTable} WHERE _id = ${id}`
+        const uri = this.state.uri;
+        fetch('/server/delete',{
+            method: 'DELETE',
+            headers:{'Content-Type': 'application/json'},
+            body:JSON.stringify({uri, queryString})
+        })
+    }
+    
+
+
+
+
     render(){
         const inputStyle={margin:'10px', width: "500px",}
         const inputTableStyle={margin:'10px', width: "100px",}
@@ -77,8 +95,12 @@ class MainContainer extends Component {
                 <select id='selectedTable' style={inputTableStyle}>
                 {tableOptions}
                 </select>
-                {/* <input id='table_name' style={inputTableStyle} placeholder="people"></input> */}
                 <button onClick={()=>this.getTable()}>Get Data</button>
+            </span>
+            <br/>
+            <span><label>Delete a Row (Insert _id):</label>
+            <input style={inputTableStyle} id='deleteRow'></input>
+            <button onClick={this.deleteRow}>Delete</button>
             </span>
             <h2>{this.state.currentTable}</h2>
             {tableArray}
