@@ -33,7 +33,7 @@ file.getTableNames = (req, res, next) => {
 file.getData = (req, res, next) => {
 const db = res.locals.pool;
   // write code here
-  const {tableName} =req.body
+  const {tableName} = req.body;
   //add as an variable
 
   const queryString='select * from '+tableName;
@@ -42,10 +42,14 @@ const db = res.locals.pool;
     if (err) {
       return next({log: err.stack, message: "Error executing query in getData"}) 
     }
-    console.log(result.rows)
     res.locals.info = result.rows;
    return next();
  })
+}
+
+file.create = (req, res, next) => {
+  const db = res.locals.pool;
+  const {tableName} = req.body;
 }
 
 module.exports = file;

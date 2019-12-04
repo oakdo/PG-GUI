@@ -11,8 +11,8 @@ const mapDispatchToProps = (dispatch) => ({
 class MainContainer extends Component {
     constructor(props){
         super(props)
-        this.state ={ data:[], uri:'',tableNames:[], isLoading: true, currentTable:'' }
-        this.getTable= this.getTable.bind(this);
+        this.state = { data:[], uri:'',tableNames:[], isLoading: true, currentTable:'' }
+        this.getTable = this.getTable.bind(this);
         this.getTableNames = this.getTableNames.bind(this);
     }
 
