@@ -30,7 +30,7 @@ class MainContainer extends Component {
     // Get required data to build queryString to query database
     const uri = this.state.uri;
     const tableName = document.querySelector('#selectedTable').value;
-    const queryString='select * from '+tableName;
+    const queryString = 'select * from ' + tableName;
     const data = { uri, queryString };
     
     // send URI and queryString in a post request
@@ -92,7 +92,7 @@ class MainContainer extends Component {
     fetch('/server/tablenames', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({uri})
+      body: JSON.stringify({ uri })
     })
       .then(res => res.json())
       .then(result => {
@@ -144,6 +144,7 @@ render(){
     const inputStyle={margin:'10px', width: "500px",}
     const inputTableStyle={margin:'10px', width: "100px",}
     const tableOptions =[]
+
     
     for(let i=0; i<this.state.tableNames.length; i++){
       tableOptions.push(<option key={i + '_tableOptions'} value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>)
@@ -164,7 +165,7 @@ render(){
     }
 
     return (
-      <div>
+      <div class="flex">
         <span>
           <label>Place URI Here:</label>
           <input
@@ -188,10 +189,13 @@ render(){
             <button onClick={this.deleteRow}>Delete</button>
             </span>
         <h2>{this.state.currentTable}</h2>
-        {tableArray}
+        <div>{tableArray}</div>
       </div>
     );
   }
 }
 
-export default connect(null,mapDispatchToProps)(MainContainer);
+export default connect(
+  null,
+  mapDispatchToProps
+)(MainContainer);

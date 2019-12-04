@@ -6,37 +6,32 @@ import HeaderCell from './HeaderCells.js';
 
 class TableHeader extends Component {
   constructor(props) {
-    super(props) 
-    
-    this.state = {
-      
-    }
-    this.handleEvent = this.handleEvent.bind(this)
-  }
-  
-  
-  handleEvent(event){
-   
-   const queryString = `SELECT * FROM ${this.props.tableName} ORDER BY ${event.target.placeholder}`
-   console.log(queryString)
-    
+    super(props);
 
-   this.props.reRender(queryString)
+    this.state = {};
+    this.handleEvent = this.handleEvent.bind(this);
   }
 
+  handleEvent(event) {
+    const queryString = `SELECT * FROM ${this.props.tableName} ORDER BY ${event.target.placeholder}`;
+    console.log(queryString);
 
-  render () {
+    this.props.reRender(queryString);
+  }
 
+  render() {
     const rowsArr = [];
     this.props.keys.forEach((val, index) => {
-        rowsArr.push(<HeaderCell handleEvent={this.handleEvent} key={index + '_headerCell'} data={val} />)
-      });
+      rowsArr.push(
+        <HeaderCell
+          handleEvent={this.handleEvent}
+          key={index + '_headerCell'}
+          data={val}
+        />
+      );
+    });
 
-    return (
-      <div>
-        {rowsArr}
-      </div>
-    );
+    return <div>{rowsArr}</div>;
   }
 }
 
