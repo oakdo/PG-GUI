@@ -42,6 +42,10 @@ app.post('/server/table',
 app.post('/server/update', connectionPoint.createConnection, file.update, (req, res) => {
   return res.status(200).json(res.locals.new)
 })
+
+app.delete('/server/delete', connectionPoint.createConnection, file.delete, (req, res) => {
+  return res.status(200)
+})
   
 app.listen(PORT, ()=> {console.log(`Listening on Port ${PORT}`)})
 
