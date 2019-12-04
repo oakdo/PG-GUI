@@ -1,21 +1,39 @@
 import React, {Component} from 'react';
-import InputCell from './InputCells.js';
-
+import HeaderCell from './HeaderCells.js';
 
 class TableHeader extends Component {
   constructor(props) {
     super(props) 
-
+    
     this.state = {
-
+      
     }
+    this.handleEvent = this.handleEvent.bind(this)
   }
+  
+  
+  handleEvent(event){
+   
+   const uri = this.props.uri
+   const queryString = `SELECT * FROM ${this.props.tableName} ORDER BY ${event.target.placeholder}`
+   console.log(queryString)
+
+
+   fetch('/server/update', {
+    method: 'POST',
+    body: JSON.stringify({uri,queryString}),
+    headers: {
+      'Content-Type' : 'application/json'
+    }
+  })
+  }
+
 
   render () {
 
     const rowsArr = [];
     this.props.keys.forEach((val, index) => {
-        rowsArr.push(<InputCell key={index + '_inputCell'} data={val} />)
+        rowsArr.push(<HeaderCell handleEvent={this.handleEvent} key={index + '_headerCell'} data={val} />)
       });
 
     return (
