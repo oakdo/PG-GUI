@@ -14,10 +14,9 @@ class TableHeader extends Component {
   
   handleEvent(event){
    
-   const uri = this.props.uri
    const queryString = `SELECT * FROM ${this.props.tableName} ORDER BY ${event.target.placeholder}`
    console.log(queryString)
-
+    
 
    this.props.reRender(queryString)
   }

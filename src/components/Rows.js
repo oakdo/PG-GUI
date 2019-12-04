@@ -11,21 +11,41 @@ class Row extends Component {
   }
 
   onEnter(event) {
+    console.log(event.key)
+    const reRender = this.props.reRender;
+    const uri = this.props.uri;
+    const tableName = this.props.tableName
+    
+    if (event.key === '?') {
+      const columnName = event.target.name;
+      const query = event.target.placeholder;
+      const filterString = `SELECT * FROM ${tableName} WHERE ${columnName} = '${query}'`
+
+      reRender(filterString)
+      
+      
+    }
+
+    if (event.key === '/') {
+      const columnName = event.target.name;
+      const query = event.target.placeholder;
+      const filterString = `SELECT * FROM ${tableName} WHERE ${columnName} != '${query}'`
+
+      reRender(filterString)
+      
+    }
+
     if (event.key === 'Enter') {
       const newValue = event.target.value;
       const primaryKey = this.props.data._id;
       const columnName = event.target.name;
-      const reRender = this.props.reRender;
-
       let queryString;
+      
       if (isNaN(newValue)) {
-        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = '${newValue}' WHERE _id = ${primaryKey}`;
+        queryString = `UPDATE ${tableName} SET ${columnName} = '${newValue}' WHERE _id = ${primaryKey}`;
       } else {
-        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = ${Number(newValue)} WHERE _id = ${primaryKey}`;
-      }
-      const uri = this.props.uri;
-
-      console.log('THIS IS QUERYSTRNG', uri, queryString);
+        queryString = `UPDATE ${tableName} SET ${columnName} = ${Number(newValue)} WHERE _id = ${primaryKey}`;
+        }
 
       fetch('/server/update', {
         method: 'POST',
@@ -33,10 +53,7 @@ class Row extends Component {
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(data => {
-        console.log('post request on enter has completed');
-        reRender();
-      });
+          }).then(data => reRender())
     }
   }
 
