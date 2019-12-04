@@ -33,10 +33,10 @@ file.getTableNames = (req, res, next) => {
 file.getData = (req, res, next) => {
 const db = res.locals.pool;
   // write code here
-  const {tableName} =req.body
+  const { queryString } = req.body
   //add as an variable
 
-  const queryString='select * from '+tableName;
+  // const queryString='select * from '+tableName;
 
   db.query(queryString,(err, result)=>{
     if (err) {

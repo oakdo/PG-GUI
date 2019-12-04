@@ -21,7 +21,7 @@ class Row extends Component {
       if (isNaN(newValue)) {
         queryString = `UPDATE ${this.props.tableName} SET ${columnName} = '${newValue}' WHERE _id = ${primaryKey}`;
       } else {
-        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = ${newValue} WHERE _id = ${primaryKey}`;
+        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = ${Number(newValue)} WHERE _id = ${primaryKey}`;
       }
       const uri = this.props.uri;
 

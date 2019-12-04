@@ -27,7 +27,9 @@ class MainContainer extends Component {
     //we need
     const uri = this.state.uri;
     const tableName = document.querySelector('#selectedTable').value;
-    const data = { uri, tableName };
+    const queryString='select * from '+tableName;
+    const data = { uri, queryString };
+    // const data = { uri, tableName };
     fetch('/server/table', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,23 +65,32 @@ class MainContainer extends Component {
       });
   }
 
-  reRender() {
+  reRender(newString) {
     const tableName = this.state.currentTable;
     const uri = this.state.uri;
+    let queryString;
+    if(newString!== undefined){
+      queryString=newString;
+    }
+    else{
+      queryString='select * from '+tableName;
+    }
+    
+    const tableData = { uri, queryString };
+    
 
-    const data = { uri };
-    const tableData = { uri, tableName };
+
     this.setState({ isLoading: true });
 
     fetch('/server/tablenames', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify({uri})
     })
       .then(res => res.json())
       .then(result => {
         const titlesArray = [];
-        console.log(result);
+
         result.forEach(el => {
           if (el.tablename.slice(0, 4) !== 'sql_') {
             titlesArray.push(el.tablename);
