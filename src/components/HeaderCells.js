@@ -1,13 +1,8 @@
+// This component creates each cell for the column names
+
 import React, {Component} from 'react';
 
 class HeaderCell extends Component {
-  constructor(props) {
-    super(props) 
-
-    this.state = {
-
-    }
-  }
 
   render () {
     return (
