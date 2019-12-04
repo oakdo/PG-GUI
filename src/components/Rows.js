@@ -1,58 +1,60 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import InputCell from './InputCells.js';
-
 
 class Row extends Component {
   constructor(props) {
-    super(props) 
+    super(props);
 
-    this.state = {
+    this.state = {};
 
-    }
-
-    this.onEnter = this.onEnter.bind(this)
+    this.onEnter = this.onEnter.bind(this);
   }
 
-  onEnter(event){
-    if(event.key === 'Enter'){
+  onEnter(event) {
+    if (event.key === 'Enter') {
       const newValue = event.target.value;
       const primaryKey = this.props.data._id;
       const columnName = event.target.name;
-      let queryString; 
-      if(isNaN(newValue)) {
-        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = '${newValue}' WHERE _id = ${primaryKey}`
-      }
-      else{
-        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = ${newValue} WHERE _id = ${primaryKey}`
-      }
-      const uri = this.props.uri
+      const reRender = this.props.reRender;
 
-      console.log('THIS IS QUERYSTRNG', uri, queryString)
+      let queryString;
+      if (isNaN(newValue)) {
+        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = '${newValue}' WHERE _id = ${primaryKey}`;
+      } else {
+        queryString = `UPDATE ${this.props.tableName} SET ${columnName} = ${newValue} WHERE _id = ${primaryKey}`;
+      }
+      const uri = this.props.uri;
+
+      console.log('THIS IS QUERYSTRNG', uri, queryString);
 
       fetch('/server/update', {
         method: 'POST',
-        body: JSON.stringify({uri,queryString}),
+        body: JSON.stringify({ uri, queryString }),
         headers: {
-          'Content-Type' : 'application/json'
+          'Content-Type': 'application/json'
         }
-      })
-
+      }).then(data => {
+        console.log('post request on enter has completed');
+        reRender();
+      });
     }
-
   }
 
-  render () {
+  render() {
     const columns = Object.entries(this.props.data);
     const rowsArr = [];
     columns.forEach((val, index) => {
-        rowsArr.push(<InputCell key={index + '_inputCell'} data={val[1]} column={val[0]} onEnter={this.onEnter} />)
-      });
+      rowsArr.push(
+        <InputCell
+          key={index + '_inputCell'}
+          data={val[1]}
+          column={val[0]}
+          onEnter={this.onEnter}
+        />
+      );
+    });
 
-    return (
-      <div>
-        {rowsArr}
-      </div>
-    );
+    return <div>{rowsArr}</div>;
   }
 }
 
