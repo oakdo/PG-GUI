@@ -65,4 +65,17 @@ const db = res.locals.pool;
  })
 }
 
+file.create = (req, res, next) => {
+  const db = res.locals.pool;
+  const { queryString } = req.body;
+
+  db.query(queryString,(err, result)=>{
+    if (err) {
+      return next({log: err.stack, message: "Error executing query in create"}) 
+    }
+    res.locals.create = result.rows;
+   return next();
+  })
+}
+
 module.exports = file;
