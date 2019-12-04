@@ -124,8 +124,9 @@ class MainContainer extends Component {
 
    // Delete row method
     deleteRow(){
-        const id = document.querySelector('#deleteRow').value;
-        const queryString = `DELETE FROM ${this.state.currentTable} WHERE id = ${id}`
+        const PK = Object.keys(this.state.data[0])[0]
+        const PKValue = document.querySelector('#deleteRow').value;
+        const queryString = `DELETE FROM ${this.state.currentTable} WHERE ${PK} = ${PKValue}`
         const uri = this.state.uri;
 
         fetch('/server/delete',{

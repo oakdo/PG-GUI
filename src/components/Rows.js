@@ -11,7 +11,7 @@ class Row extends Component {
   }
 
   onEnter(event) {
-    console.log(event.key)
+    const PK = Object.keys(this.props.data)[0]
     const reRender = this.props.reRender;
     const uri = this.props.uri;
     const tableName = this.props.tableName
@@ -36,16 +36,18 @@ class Row extends Component {
     }
 
     if (event.key === 'Enter') {
+     
       const newValue = event.target.value;
-      const primaryKey = this.props.data._id;
+      const PKValue = this.props.data[PK];
       const columnName = event.target.name;
       let queryString;
       
       if (isNaN(newValue)) {
-        queryString = `UPDATE ${tableName} SET ${columnName} = '${newValue}' WHERE _id = ${primaryKey}`;
+        queryString = `UPDATE ${tableName} SET ${columnName} = '${newValue}' WHERE ${PK} = ${PKValue}`;
       } else {
-        queryString = `UPDATE ${tableName} SET ${columnName} = ${Number(newValue)} WHERE _id = ${primaryKey}`;
+        queryString = `UPDATE ${tableName} SET ${columnName} = ${Number(newValue)} WHERE ${PK} = ${PKValue}`;
         }
+
 
       fetch('/server/update', {
         method: 'POST',
