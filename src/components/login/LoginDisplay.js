@@ -1,20 +1,19 @@
 import React from 'react';
+import './LoginDisplay.css';
 
 
-const LogInDisplay = props => (
- <div>
-  <div>
-    <input placeholder = "username"/>
+const LogInDisplay = (props) => (
+  <div className="login-display">
+    <div className="form-group">
+      <input placeholder="username" />
+      <input placeholder="password" />
+      <button>Login</button>
+      <button>Sign Up</button>
+      <div>
+        <a href="http://localhost:3000/login" className="button">Login With Github</a>
+      </div>
+    </div>
   </div>
-  
-  <div>
-    <input placeholder = "password"/>
-  </div>
-
-   <button> This is a button </button>
-   <button> This is another button </button>
-   <button> GitHub </button>
- </div>
 );
 
 

@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
-import SideImageDisplay from '../components/login/SideImageDisplay'
-import LoginDisplay from '../components/login/LoginDisplay'
+import SideImageDisplay from '../components/login/SideImageDisplay';
+import LoginDisplay from '../components/login/LoginDisplay';
+import './LoginContainer.css';
 
 
 class LoginContainer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
 
     };
-  };
+  }
 
 
-
-
-  render () {
+  render() {
     return (
-      <div 
-      display = "flex"
-      
-
-      >
-        <SideImageDisplay/>
-        <LoginDisplay/>
+      <div className="login-container">
+        <SideImageDisplay />
+        <LoginDisplay />
       </div>
-    )
+    );
   }
 }
 
