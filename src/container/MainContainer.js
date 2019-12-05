@@ -211,14 +211,13 @@ render(){
     
     //!!
     const previousQueriesList =[]
+    const prevQueryCheck = [];
 
     for(let i=0; i<this.state.previousQueries.length; i++){
       
-      if (this.state.previousQueries[i].includes('postgres://') ) {
+      if (this.state.previousQueries[i].includes('postgres://') && (!prevQueryCheck.includes(this.state.previousQueries[i]))){
 
-        console.log(this.state.previousQueries[i])
-        console.log(previousQueriesList.includes(this.state.previousQueries[i]))
-      
+      prevQueryCheck.push(this.state.previousQueries[i])
       previousQueriesList.push(<option key={i} value={this.state.previousQueries[i]} > {this.state.previousQueries[i]}</option>)
       }
 
