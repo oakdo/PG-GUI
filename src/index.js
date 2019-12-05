@@ -7,7 +7,7 @@ import store from './store';
 
 ReactDOM.render(
   <Provider store={store}>
-      <LoginContainer />
+      <MainContainer />
     </Provider>,
     document.getElementById('root'),
 );
