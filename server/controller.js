@@ -94,8 +94,7 @@ file.createUser = (req, res, next) => {
   // create custom queryString
   const queryString = 'INSERT INTO Users (email,password) VALUES ($1,$2)';
 
-  const password = 'bcryptedPasswrd';
-
+  // check that middleware is firing
   console.log('Firing createUser');
 
   bcrypt.hash(password, saltRounds, (err, hash) => {
@@ -110,5 +109,15 @@ file.createUser = (req, res, next) => {
     });
   });
 };
+
+// login user
+file.loginUser = (req, res, next) => {
+  const db = res.locals.pool;
+
+  // creat query string
+  // test return from database
+  const queryString = 'SELECT * FROM users';
+};
+
 
 module.exports = file;
