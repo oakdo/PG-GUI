@@ -5,7 +5,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     // publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   mode: 'development',
   devServer: {
@@ -14,16 +14,20 @@ module.exports = {
     compress: true,
     port: 8000,
     proxy: {
-      '/server/': 'http://localhost:3000'
-    }
+      '/server/': 'http://localhost:3000',
+    },
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
-      }
-    ]
-  }
+        use: ['babel-loader'],
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
 };
