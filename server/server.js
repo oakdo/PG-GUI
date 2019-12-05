@@ -63,7 +63,7 @@ app.get('/', (req, res) => {
 });
 
 // handles login integration with github
-app.get('/login', (req, res, next) => {
+app.get('/githubsignin', (req, res, next) => {
   console.log('I am trying to run now!');
   // generate that csrf_string for the "state" parameter
   req.session.csrf_string = randomString.generate();
