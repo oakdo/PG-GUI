@@ -1,0 +1,9 @@
+.login-container {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);
+    column-gap: 20px;
+    justify-content: center;
+    justify-items: center;
+    margin: 0 auto;
+    width: 80%;
+}
