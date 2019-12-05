@@ -1,3 +1,7 @@
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
+
 // MIDDLEWARES
 const file = {};
 
@@ -83,19 +87,27 @@ file.create = (req, res, next) => {
 file.createUser = (req, res, next) => {
   const db = res.locals.pool;
 
+  // pull password and email from rec.body
+  // const email = req.body.email;
+  // const password = req.body.password;
+
   // create custom queryString
-  const queryString = 'INSERT INTO users (id,email,password) VALUES ($1,$2,$3)';
+  const queryString = 'INSERT INTO Users (email,password) VALUES ($1,$2)';
 
-  // column values
-  const values = [3, 'foo2@bar3.com', 'openSesameChicken3'];
+  const password = 'bcryptedPasswrd';
 
-  // push dummydata to DB
-  db.query(queryString, values, (err, result) => {
-    if (err) {
-      return next({ log: err.stack, message: 'Error executing query in createUser' });
-    }
+  console.log('Firing createUser');
 
-    return next();
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    const values = ['foo64@MDLWARE.com', hash];
+    db.query(queryString, values, (err, result) => {
+      if (err) {
+        console.log('THIS IS ERROR:', err);
+        return next({ log: err.stack, message: 'Error executing query in createUser' });
+      }
+      console.log('User saved to dbase');
+      return next();
+    });
   });
 };
 
