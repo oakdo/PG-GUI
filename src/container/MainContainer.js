@@ -17,16 +17,47 @@ class MainContainer extends Component {
       tableNames: [],
       isLoading: true,
       currentTable: '',
+      previousQueries: []
     };
     this.getTable = this.getTable.bind(this);
     this.getTableNames = this.getTableNames.bind(this);
     this.reRender = this.reRender.bind(this);
     this.deleteRow = this.deleteRow.bind(this);
+    this.getPreviousQueries = this.getPreviousQueries.bind(this);
   }
 
   // The following are METHODS used THROUGHOUT the APP ///
   // There are only a few methods not contained in here.
   // update method which was dispatched to here for fun/learning. and a eventHandler on HeaderCell file.
+
+  
+  //!!
+  
+  getPreviousQueries () {
+    fetch('/server/previousqueries', {
+      method: 'GET'
+    })
+    .then(res => res.json())
+    .then(result => {
+      console.log("we got lift off!", result)
+      let previousQueries = [];
+      for (let i = 0; i < result.length; i++) {
+        previousQueries.push(result[i].url)
+      }
+      console.log(previousQueries)
+      this.setState({
+        previousQueries: previousQueries
+      })
+    })
+
+  }
+
+  //!!
+  componentDidMount() {
+    // console.log("youre shit mounted!")
+    this.getPreviousQueries()
+  }
+
   getTable() {
     // Get required data to build queryString to query database
     const { uri } = this.state;
@@ -40,8 +71,9 @@ class MainContainer extends Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
-      .then((result) => {
+      .then(res => res.json())
+      .then(result => {
+        // console.log("you got here and you got this: ", result)
         this.setState({
           data: result,
           isLoading: false,
@@ -63,6 +95,37 @@ class MainContainer extends Component {
       .then((result) => {
         const titlesArray = [];
         result.forEach((el) => {
+          if (el.tablename.slice(0, 4) !== 'sql_') {
+            titlesArray.push(el.tablename);
+          }
+        });
+        this.setState({ tableNames: titlesArray });
+      });
+
+    //add fetch post request here to add this query into query database
+
+    fetch('/server/addquery', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      // .then(res => console.log(res));
+
+  }
+
+  getTableNames2() {
+    const uri = document.querySelector('#uri2').value;
+    this.setState({ uri });
+    const data = { uri };
+    fetch('/server/tablenames', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(result => {
+        const titlesArray = [];
+        result.forEach(el => {
           if (el.tablename.slice(0, 4) !== 'sql_') {
             titlesArray.push(el.tablename);
           }
@@ -141,6 +204,25 @@ class MainContainer extends Component {
 });
   }
 
+render(){
+    const inputStyle={margin:'10px', width: "500px",}
+    const inputTableStyle={margin:'10px', width: "100px",}
+    const tableOptions =[]
+    
+    //!!
+    const previousQueriesList =[]
+    const prevQueryCheck = [];
+
+    for(let i=0; i<this.state.previousQueries.length; i++){
+      
+      if (this.state.previousQueries[i].includes('postgres://') && (!prevQueryCheck.includes(this.state.previousQueries[i]))){
+
+      prevQueryCheck.push(this.state.previousQueries[i])
+      previousQueriesList.push(<option key={i} value={this.state.previousQueries[i]} > {this.state.previousQueries[i]}</option>)
+      }
+
+    }
+    //!!
 
   // END OF METHODS //
 
@@ -179,7 +261,26 @@ class MainContainer extends Component {
           />
           <button onClick={() => this.getTableNames()}>Get Tables</button>
         </span>
+
         <br />
+
+        <span>
+          <label>Previous URI Queries: </label>
+          <select
+            id="uri2"
+            style={inputStyle}
+            placeholder="progres://"
+          >
+
+            {previousQueriesList}
+
+          </select>
+          <button onClick={() => this.getTableNames2()}>Get Previous Tables</button>
+        </span>
+
+        <br />
+
+
         <span>
           <label>Table Name</label>
           <select id="selectedTable" style={inputTableStyle}>

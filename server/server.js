@@ -157,6 +157,19 @@ app.get('/user', (req, res) => {
   );
 });
 
+//!!
+app.get('/server/previousqueries', 
+  connectionPoint.createConnection, file.getPrevious, (req, res) => {
+  return res.status(200).json(res.locals.previousqueries)
+})
+
+
+//!! 
+app.post('/server/addquery',
+  connectionPoint.createConnection, file.addQuery, (req, res) => {
+  return res.status(200).send("You have successfully added to your database")
+})
+
 app.post('/server/tablenames',
   connectionPoint.createConnection, file.getTableNames, (req, res) => res.status(200).json(res.locals.tableName));
 
