@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import TableDisplay from '../components/TableDisplay';
 import ChartContainer from '../container/ChartContainer'
-import { connect } from 'react-redux';
 import { update } from '../actions/actions.js';
 
 
-const mapDispatchToProps = dispatch => ({
-  update: () => dispatch(update())
-});
+// const mapDispatchToProps = dispatch => ({
+//   update: () => dispatch(update())
+// });
 
 // Create container. This is the main parent.
 class MainContainer extends Component {
@@ -21,7 +21,7 @@ class MainContainer extends Component {
       isLoading: true,
       currentTable: '',
       previousQueries: [],
-      isVisual: false
+      isVisual: false,
     };
     this.getTable = this.getTable.bind(this);
     this.getTableNames = this.getTableNames.bind(this);
@@ -42,19 +42,18 @@ class MainContainer extends Component {
     fetch('/server/previousqueries', {
       method: 'GET',
     })
-    .then(res => res.json())
-    .then(result => {
+      .then((res) => res.json())
+      .then((result) => {
       // console.log("we got lift off!", result)
-      let previousQueries = [];
-      for (let i = 0; i < result.length; i++) {
-        previousQueries.push(result[i].url)
-      }
-      // console.log(previousQueries)
-      this.setState({
-        previousQueries: previousQueries
-      })
-    })
-
+        const previousQueries = [];
+        for (let i = 0; i < result.length; i++) {
+          previousQueries.push(result[i].url);
+        }
+        // console.log(previousQueries)
+        this.setState({
+          previousQueries,
+        });
+      });
   }
 
   //! !
@@ -140,9 +139,6 @@ class MainContainer extends Component {
   }
 
 
-
-
-
   // This method is called throughout the APP to reRender after doing something
   reRender(newString) {
     const tableName = this.state.currentTable;
@@ -195,7 +191,7 @@ class MainContainer extends Component {
       });
   }
 
-  //Loads visual onto page
+  // Loads visual onto page
   inputvisual() {
     // document.getElementById("visual").append()
     // visual.push(ChartContainer)
@@ -203,22 +199,12 @@ class MainContainer extends Component {
     // console.log("hello this is working! LOAD MY SHIT NOWWWWWW")
   }
 
-   // Delete row method
-    deleteRow(){
-        const PK = Object.keys(this.state.data[0])[0]
-        const PKValue = document.querySelector('#deleteRow').value;
-        const queryString = `DELETE FROM ${this.state.currentTable} WHERE ${PK} = ${PKValue}`
-        const uri = this.state.uri;
-
-        fetch('/server/delete',{
-            method: 'DELETE',
-            headers:{'Content-Type': 'application/json'},
-            body:JSON.stringify({uri, queryString})
-        }).then(()=>{
-          console.log('hi')
-          this.reRender()})
-    }
-    
+  // Delete row method
+  deleteRow() {
+    const PK = Object.keys(this.state.data[0])[0];
+    const PKValue = document.querySelector('#deleteRow').value;
+    const queryString = `DELETE FROM ${this.state.currentTable} WHERE ${PK} = ${PKValue}`;
+    const {uri} = this.state;
 
     fetch('/server/delete', {
       method: 'DELETE',
@@ -245,7 +231,7 @@ class MainContainer extends Component {
         previousQueriesList.push(<option key={i} value={this.state.previousQueries[i]}>
           {' '}
           {this.state.previousQueries[i]}
-                                 </option>);
+        </option>);
       }
     }
     //! !
@@ -325,14 +311,17 @@ class MainContainer extends Component {
 
         <div>
           <button onClick={() => {
-            this.setState({isVisual: !this.state.isVisual})
-          }
-            }>Load Visualization</button>
+            this.setState({ isVisual: !this.state.isVisual });
+          }}
+          >
+Load Visualization
+
+          </button>
         </div>
 
 
         <div>
-          { this.state.isVisual ? <ChartContainer/> : null}
+          { this.state.isVisual ? <ChartContainer /> : null}
         </div>
       </div>
     );
