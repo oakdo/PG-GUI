@@ -2,6 +2,7 @@ import React from 'react';
 import './header.css';
 
 
+
 const Header = () => (
   <div className="page-header">
     <div className="header-content">
@@ -12,6 +13,8 @@ const Header = () => (
         <li>Sign Up</li>
         <li>About</li>
       </ul>
+
+      
     </div>
   </div>
 );

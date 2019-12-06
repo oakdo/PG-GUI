@@ -11,15 +11,20 @@ import LoginContainer from './container/LoginContainer';
 import store from './store';
 import Header from './components/header/header';
 import './index.css';
+import ChartContainer from './container/ChartContainer'
 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
       <div>
         <Header />
-        <Route exact path="/" component={LoginContainer} />
         <Route path="/home" component={MainContainer} />
+        <Route path="/" component={ChartContainer} />
+        {/* <Route path="/" component = {LoginContainer} /> */}
       </div>
+
+
+
     </Router>
   </Provider>,
   document.getElementById('root'),
