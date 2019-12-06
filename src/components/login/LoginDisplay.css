@@ -20,4 +20,38 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  
+
+}
+
+.form-input {
+    width: 250px;
+    height: 25px;
+    margin-bottom: 10px;
+}
+
+.button {
+   width: 100px;
+   height: 30px;
+   margin: 10px;
+   
+}
+
+.github {
+    border: 1px;
+    border-style: none;
+    border-radius: 10%;
+    background-color: rgb(5, 80, 57);
+    height: 25px;
+    margin-top: 10px;
+    width: 150px;
+    text-align: center;
+    padding: 10px 5px 5px 5px;
+}
+
+.login-with-git {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
 }

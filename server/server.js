@@ -62,6 +62,10 @@ app.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
 
+// app.get('/home', (req, res) => {
+//   res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
+// });
+
 // handles login integration with github
 app.get('/githubsignin', (req, res, next) => {
   console.log('I am trying to run now!');
@@ -177,7 +181,7 @@ app.post('/server/update', connectionPoint.createConnection, file.update, (req, 
 app.post('/server/create', connectionPoint.createConnection, file.create, (req, res) => res.status(200).json(res.locals.create));
 
 // createuser/signup end-point
-app.post('/server/signup', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).send());
+app.post('/server/signup', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).json({ success: 'Sign Up Successful!' }));
 
 app.post('/server/login', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).send());
 
