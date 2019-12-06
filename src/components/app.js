@@ -92,7 +92,7 @@ class App extends Component {
           userDetails={this.state.userDetails}
           action={this.handleFormSubmit}
         />
-        <ChartContainer/>
+        {/* <ChartContainer/> */}
       </div>
     );
   }
