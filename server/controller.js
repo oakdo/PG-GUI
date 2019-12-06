@@ -194,22 +194,21 @@ file.loginUser = (req, res, next) => {
     const dbuser = result.rows[0];
 
     // bcrypt compare
-    bcrypt.compare(password, dbuser.password, (error, cryptresult) => {
-      if (err) {
-        console.log('bcrypt auth failed');
-        res.locals.auth = { login: 'Failed' };
-        res.status(403).send();
-      } else {
-        res.locals.auth = { login: 'Successful' };
-        // setting our cookie
-        res.cookie('email', email);
-      }
-    });
+    // bcrypt.compare(password, dbuser.password, (error, cryptresult) => {
+    //   if (err) {
+    //     console.log('bcrypt auth failed');
+    //     res.locals.auth = { login: 'Failed' };
+    //     res.status(403).send();
+    //   } else {
+    //     res.locals.auth = { login: 'Successful' };
+    //     // setting our cookie
+    //     res.cookie('email', email);
+    //   }
+    // });
 
     // if user view email matches dbemail and view password matches dbpassword log open sesamse
     if (email === dbuser.email && password === dbuser.password) {
       console.log('open sesame');
-
 
       // setting our cookie
       res.cookie('email', email);
@@ -220,7 +219,7 @@ file.loginUser = (req, res, next) => {
     } else {
       // on  failure assign res.locals.auth="LoginFailed"
       res.locals.auth = { login: 'Failed' };
-
+      
       // TODO: REMOVE LOGS BELOW
       // console.log('Not a match');
       // console.log(`
