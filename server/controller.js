@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const session = require('express-session');
+const cookie = require('cookie');
 
 const saltRounds = 10;
 
@@ -88,8 +90,7 @@ file.createUser = (req, res, next) => {
   const db = res.locals.pool;
 
   // pull password and email from rec.body
-  // const email = req.body.email;
-  // const password = req.body.password;
+  const { email, password } = req.body;
 
   // create custom queryString
   const queryString = 'INSERT INTO Users (email,password) VALUES ($1,$2)';
@@ -97,8 +98,9 @@ file.createUser = (req, res, next) => {
   // check that middleware is firing
   console.log('Firing createUser');
 
+  // bcrypt hashing
   bcrypt.hash(password, saltRounds, (err, hash) => {
-    const values = ['foo64@MDLWARE.com', hash];
+    const values = [email, hash];
     db.query(queryString, values, (err, result) => {
       if (err) {
         console.log('THIS IS ERROR:', err);
@@ -112,11 +114,72 @@ file.createUser = (req, res, next) => {
 
 // login user
 file.loginUser = (req, res, next) => {
+  // query object
   const db = res.locals.pool;
 
-  // creat query string
-  // test return from database
-  const queryString = 'SELECT * FROM users';
+  // log to console the initiation of this middleware
+  console.log('Fired LoginUser Middleware');
+
+  // log req body
+  console.log('request body:', req.body);
+
+  // create session
+
+  // destructure email and password from front end to authenticate user
+  const { email, password } = req.body;
+
+  // create query string
+  const queryString = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}';`;
+
+
+  // check if user/passwrd match exist in database
+  // TODO: BCRYPT password for auth
+  db.query(queryString, (err, result) => {
+    if (err) {
+      console.log('THIS IS DATABASE QUERY ERROR:', err);
+      return next({ log: err.stack, message: 'Error executing query in createUser' });
+    }
+
+    // save user results from databse to constant
+    const dbuser = result.rows[0];
+
+    // bcrypt compare
+    bcrypt.compare(password, dbuser.password, (error, cryptresult) => {
+      if (err) {
+        console.log('bcrypt auth failed');
+        res.locals.auth = { login: 'Failed' };
+        res.status(403).send();
+      } else {
+        res.locals.auth = { login: 'Successful' };
+        // setting our cookie
+        res.cookie('email', email);
+      }
+    });
+
+    // if user view email matches dbemail and view password matches dbpassword log open sesamse
+    if (email === dbuser.email && password === dbuser.password) {
+      console.log('open sesame');
+
+
+      // setting our cookie
+      res.cookie('email', email);
+
+      // assign success object to res.local.auth
+      res.locals.auth = { login: 'Successful' };
+      // TODO: on auth entication - create session/cookies - return token?
+    } else {
+      // on  failure assign res.locals.auth="LoginFailed"
+      res.locals.auth = { login: 'Failed' };
+
+      // TODO: REMOVE LOGS BELOW
+      // console.log('Not a match');
+      // console.log(`
+      //  view email:${email}  | db email: ${dbuser.email}
+      //  view password: ${password} | db password:${dbuser.password}
+      // `);
+    }
+    return next();
+  });
 };
 
 
