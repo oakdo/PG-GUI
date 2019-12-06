@@ -7,6 +7,7 @@ const app = express();
 const PORT = 3000;
 const path = require('path');
 
+
 // express session
 const session = require('express-session');
 
@@ -28,22 +29,29 @@ const csrfString = randomString.generate();
 const redirect_uri = `${process.env.HOST}/signin/callback`;
 
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const file = require('./controller');
 const { connectionPoint } = require('./connection.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cors({
+  origin: 'http://localhost:8000/',
+  credentials: true,
+}));
 
 // initializes session
-app.use(
-  session({
-    secret: randomString.generate(),
-    cookie: { maxAge: 60000 },
-    resave: false,
-    saveUninitialized: false,
-  }),
-);
+// app.use(
+//   session({
+//     secret: randomString.generate(),
+//     cookie: { maxAge: 60000 },
+//     resave: false,
+//     saveUninitialized: false,
+//   }),
+// );
 
 
 // CHAOS FLOW
@@ -57,6 +65,7 @@ app.use(
 //   );
 //   return next();
 // });
+
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
@@ -179,7 +188,8 @@ app.post('/server/create', connectionPoint.createConnection, file.create, (req, 
 // createuser/signup end-point
 app.post('/server/signup', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).json({ success: 'Sign Up Successful!' }));
 
-app.post('/server/login', connectionPoint.createConnection, file.loginUser, (req, res) => res.status(200).json({ success: 'Sign Up Successful!' }));
+// user login end-point
+app.post('/server/login', connectionPoint.createConnection, file.loginUser, (req, res) => res.status(200).json(res.locals.auth));
 
 app.delete('/server/delete', connectionPoint.createConnection, file.delete, (req, res) => res.status(200).json(res.locals.delete));
 
