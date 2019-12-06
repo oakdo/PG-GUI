@@ -88,8 +88,7 @@ file.createUser = (req, res, next) => {
   const db = res.locals.pool;
 
   // pull password and email from rec.body
-  // const email = req.body.email;
-  // const password = req.body.password;
+  const { email, password } = req.body;
 
   // create custom queryString
   const queryString = 'INSERT INTO Users (email,password) VALUES ($1,$2)';
@@ -98,7 +97,7 @@ file.createUser = (req, res, next) => {
   console.log('Firing createUser');
 
   bcrypt.hash(password, saltRounds, (err, hash) => {
-    const values = ['foo64@MDLWARE.com', hash];
+    const values = [email, hash];
     db.query(queryString, values, (err, result) => {
       if (err) {
         console.log('THIS IS ERROR:', err);
