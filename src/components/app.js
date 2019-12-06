@@ -20,7 +20,8 @@ class App extends Component {
 
     };
     this.handleInput = this.handleInput.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleFormSubmitSignUp = this.handleFormSubmitSignUp.bind(this);
+    this.handleFormSubmitLogin = this.handleFormSubmitLogin.bind(this);
   }
 
   //   componentDidMount() {
@@ -44,17 +45,32 @@ class App extends Component {
     );
   }
 
-  handleFormSubmit(e) {
+  handleFormSubmitSignUp(e) {
     e.preventDefault();
-    const { type } = e.target;
     const { userDetails } = this.state;
-    console.log(userDetails);
-    const loginEndPoint = '/server/login';
-    const signupEndpoint = '/server/signup';
-    const url = type === 'login' ? loginEndPoint : signupEndpoint;
-    // !! temporary login endpoint testing
-    // const url = loginEndPoint;
-    // const url = signupEndpoint;
+
+    const url = '/server/signup';
+    console.log('this is the url i am using: ', url);
+
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(userDetails),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => response.json())
+      .then((data) => {
+        console.log(`This is the response data for ${url}:`, data);
+        alert('Sign Up successful please login now!');
+      })
+      .catch((err) => console.log(err));
+  }
+
+  handleFormSubmitLogin(e) {
+    e.preventDefault();
+    const { userDetails } = this.state;
+    const url = '/server/login';
 
     fetch(url, {
       method: 'POST',
@@ -71,6 +87,7 @@ class App extends Component {
             { isLoggedIn: true },
         });
         console.log(this.state);
+        alert('Login successful');
       })
       .catch((err) => console.log(err));
   }
@@ -92,7 +109,8 @@ class App extends Component {
         <LoginContainer
           handleChange={this.handleInput}
           userDetails={this.state.userDetails}
-          action={this.handleFormSubmit}
+          handleSignUp={this.handleFormSubmitSignUp}
+          handleLogin={this.handleFormSubmitLogin}
         />
       </div>
     );

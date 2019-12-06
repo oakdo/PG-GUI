@@ -165,6 +165,7 @@ file.createUser = (req, res, next) => {
 // login user
 file.loginUser = (req, res, next) => {
   // query object
+  res.locals.pool.options.connectionString = 'postgres://jiqoikud:Zf9rq6T9_LqglYgGNJnsb_eseI0PaZB7@isilo.db.elephantsql.com:5432/jiqoikud';
   const db = res.locals.pool;
 
   // log to console the initiation of this middleware
@@ -177,9 +178,12 @@ file.loginUser = (req, res, next) => {
 
   // destructure email and password from front end to authenticate user
   const { email, password } = req.body;
+  // const email = req.body.email;
+  // const password = req.body.password;
 
   // create query string
-  const queryString = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}';`;
+  const queryString = `SELECT * FROM users WHERE email = '${email}';`;
+  // const queryString = 'SELECT * FROM users WHERE email = \'kenny@gmail\' AND password = \'qwe\';';
 
 
   // check if user/passwrd match exist in database
@@ -190,8 +194,10 @@ file.loginUser = (req, res, next) => {
       return next({ log: err.stack, message: 'Error executing query in createUser' });
     }
 
+    console.log('This is result: ', result);
     // save user results from databse to constant
     const dbuser = result.rows[0];
+
 
     // bcrypt compare
     // bcrypt.compare(password, dbuser.password, (error, cryptresult) => {
@@ -219,7 +225,7 @@ file.loginUser = (req, res, next) => {
     } else {
       // on  failure assign res.locals.auth="LoginFailed"
       res.locals.auth = { login: 'Failed' };
-      
+
       // TODO: REMOVE LOGS BELOW
       // console.log('Not a match');
       // console.log(`

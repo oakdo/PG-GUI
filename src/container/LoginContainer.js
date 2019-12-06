@@ -7,7 +7,7 @@ import './LoginContainer.css';
 const LoginContainer = (props) => (
   <div className="login-container">
     <SideImageDisplay />
-    <LoginDisplay handleChange={props.handleChange} userDetails={props.userDetails} action={props.action} />
+    <LoginDisplay handleChange={props.handleChange} userDetails={props.userDetails} handleSignUp={props.handleSignUp} handleLogin={props.handleLogin} />
   </div>
 );
 
