@@ -220,14 +220,13 @@ class MainContainer extends Component {
       }
     }
     //! !
-  }
 
-  // END OF METHODS //
+    // END OF METHODS //
 
-  render() {
-    const inputStyle = { margin: '10px', width: '500px' };
-    const inputTableStyle = { margin: '10px', width: '100px' };
-    const tableOptions = [];
+    // render() {
+    //   const inputStyle = { margin: '10px', width: '500px' };
+    //   const inputTableStyle = { margin: '10px', width: '100px' };
+    //   const tableOptions = [];
 
 
     for (let i = 0; i < this.state.tableNames.length; i++) {
