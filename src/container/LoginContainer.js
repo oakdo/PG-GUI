@@ -9,7 +9,7 @@ class LoginContainer extends Component {
     super(props);
     this.state = {
       userDetails: {
-        username: '',
+        email: '',
         password: '',
       },
 
@@ -39,7 +39,9 @@ class LoginContainer extends Component {
     console.log(userDetails);
     const loginEndPoint = '/server/login';
     const signupEndpoint = '/server/signup';
-    const url = type === 'login' ? loginEndPoint : signupEndpoint;
+    // const url = type === 'login' ? loginEndPoint : signupEndpoint;
+    // TODO: replace this with conditional for login and sign up once testing has finishied
+    const url = loginEndPoint;
 
     fetch(url, {
       method: 'POST',

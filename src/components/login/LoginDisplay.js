@@ -5,10 +5,10 @@ import './LoginDisplay.css';
 const LogInDisplay = (props) => (
   <div className="login-display">
     <div className="form-group">
-      <label htmlFor="username" className="form-label">
-          Username:
+      <label htmlFor="email" className="form-label">
+          Email:
       </label>
-      <input className="form-input" name="username" type="text" value={props.userDetails.username} onChange={props.handlechange} placeholder="username" required />
+      <input className="form-input" name="email" type="text" value={props.userDetails.email} onChange={props.handlechange} placeholder="email" required />
       <label htmlFor="password" className="form-label">
           Password:
       </label>
