@@ -6,60 +6,58 @@ const saltRounds = 10;
 const file = {};
 
 file.getPrevious = (req, res, next) => {
-  res.locals.pool.options.connectionString = 'postgres://jiqoikud:Zf9rq6T9_LqglYgGNJnsb_eseI0PaZB7@isilo.db.elephantsql.com:5432/jiqoikud'
-  
+  res.locals.pool.options.connectionString = 'postgres://jiqoikud:Zf9rq6T9_LqglYgGNJnsb_eseI0PaZB7@isilo.db.elephantsql.com:5432/jiqoikud';
+
   // console.log("this is res.lcaols", res.locals)
   // console.log("this is res.locals.pool", res.locals.pool)
   // console.log("this is the connection string", res.locals.pool.connectionString)
   const db = res.locals.pool;
   // console.log("this is DB query", db.query)
-  const previousQuery = `SELECT * FROM queries;`
+  const previousQuery = 'SELECT * FROM queries;';
 
-  db.query(previousQuery,(err, result)=>{
+  db.query(previousQuery, (err, result) => {
     // console.log("YESSS!", result)
     if (err) {
-      return next({log: err.stack, message: "Error executing query in getData"}) 
+      return next({ log: err.stack, message: 'Error executing query in getData' });
     }
     // console.log("this is the res", res)
     // console.log("we got a ressssss and here are the rows", result.rows)
     res.locals.previousqueries = result.rows;
-   return next();
- })
-}
+    return next();
+  });
+};
 
 // Adds search query into previous query table
 
 file.addQuery = (req, res, next) => {
-
-
-  res.locals.pool.options.connectionString = 'postgres://jiqoikud:Zf9rq6T9_LqglYgGNJnsb_eseI0PaZB7@isilo.db.elephantsql.com:5432/jiqoikud'
+  res.locals.pool.options.connectionString = 'postgres://jiqoikud:Zf9rq6T9_LqglYgGNJnsb_eseI0PaZB7@isilo.db.elephantsql.com:5432/jiqoikud';
 
   const db = res.locals.pool;
 
   // console.log("this is the req.body", req.body)
 
-  const addQueryQuery = `INSERT INTO queries (user_id, url) VALUES (1, '${req.body}');`
+  const addQueryQuery = `INSERT INTO queries (user_id, url) VALUES (1, '${req.body}');`;
 
-    db.query(addQueryQuery,(err, result)=>{
-      // console.log("YESSS!", result)
-      if (err) {
-        return next({log: err.stack, message: "Error executing query in getData"}) 
-      }
-      // console.log("******* this is results", result.rows[0])
-      // console.log("this is the res", res)
-      // res.locals.info = result.rows;
-      // console.log("you supposedly did it!")
-     return next();
-   })
-  }
+  db.query(addQueryQuery, (err, result) => {
+    // console.log("YESSS!", result)
+    if (err) {
+      return next({ log: err.stack, message: 'Error executing query in getData' });
+    }
+    // console.log("******* this is results", result.rows[0])
+    // console.log("this is the res", res)
+    // res.locals.info = result.rows;
+    // console.log("you supposedly did it!")
+    return next();
+  });
+};
 
 // Get table data from database
 file.getData = (req, res, next) => {
-const db = res.locals.pool;
+  const db = res.locals.pool;
   // console.log(db)
-  const { queryString } = req.body
+  const { queryString } = req.body;
 
-  db.query(queryString,(err, result)=>{
+  db.query(queryString, (err, result) => {
     // console.log("YESSS!", result)
     if (err) {
       return next({ log: err.stack, message: 'Error executing query in getData' });
@@ -136,6 +134,7 @@ file.create = (req, res, next) => {
 
 // create new user middleware
 file.createUser = (req, res, next) => {
+  res.locals.pool.options.connectionString = 'postgres://jiqoikud:Zf9rq6T9_LqglYgGNJnsb_eseI0PaZB7@isilo.db.elephantsql.com:5432/jiqoikud';
   const db = res.locals.pool;
 
   // pull password and email from rec.body

@@ -78,6 +78,7 @@ class App extends Component {
     if (this.state.userDetails.isLoggedIn) {
       return (
         <div>
+          <Header />
           <MainContainer />
         </div>
       );
