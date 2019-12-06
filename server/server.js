@@ -157,18 +157,14 @@ app.get('/user', (req, res) => {
   );
 });
 
-//!!
-app.get('/server/previousqueries', 
-  connectionPoint.createConnection, file.getPrevious, (req, res) => {
-  return res.status(200).json(res.locals.previousqueries)
-})
+//! !
+app.get('/server/previousqueries',
+  connectionPoint.createConnection, file.getPrevious, (req, res) => res.status(200).json(res.locals.previousqueries));
 
 
-//!! 
+//! !
 app.post('/server/addquery',
-  connectionPoint.createConnection, file.addQuery, (req, res) => {
-  return res.status(200).send("You have successfully added to your database")
-})
+  connectionPoint.createConnection, file.addQuery, (req, res) => res.status(200).send('You have successfully added to your database'));
 
 app.post('/server/tablenames',
   connectionPoint.createConnection, file.getTableNames, (req, res) => res.status(200).json(res.locals.tableName));
@@ -183,7 +179,7 @@ app.post('/server/create', connectionPoint.createConnection, file.create, (req, 
 // createuser/signup end-point
 app.post('/server/signup', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).json({ success: 'Sign Up Successful!' }));
 
-app.post('/server/login', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).send());
+app.post('/server/login', connectionPoint.createConnection, file.loginUser, (req, res) => res.status(200).json({ success: 'Sign Up Successful!' }));
 
 app.delete('/server/delete', connectionPoint.createConnection, file.delete, (req, res) => res.status(200).json(res.locals.delete));
 
