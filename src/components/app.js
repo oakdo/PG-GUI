@@ -52,6 +52,9 @@ class App extends Component {
     const loginEndPoint = '/server/login';
     const signupEndpoint = '/server/signup';
     const url = type === 'login' ? loginEndPoint : signupEndpoint;
+    // !! temporary login endpoint testing
+    // const url = loginEndPoint;
+    // const url = signupEndpoint;
 
     fetch(url, {
       method: 'POST',
