@@ -17,7 +17,7 @@ class MainContainer extends Component {
       tableNames: [],
       isLoading: true,
       currentTable: '',
-      previousQueries: []
+      previousQueries: [],
     };
     this.getTable = this.getTable.bind(this);
     this.getTableNames = this.getTableNames.bind(this);
@@ -30,32 +30,31 @@ class MainContainer extends Component {
   // There are only a few methods not contained in here.
   // update method which was dispatched to here for fun/learning. and a eventHandler on HeaderCell file.
 
-  
-  //!!
-  
-  getPreviousQueries () {
-    fetch('/server/previousqueries', {
-      method: 'GET'
-    })
-    .then(res => res.json())
-    .then(result => {
-      console.log("we got lift off!", result)
-      let previousQueries = [];
-      for (let i = 0; i < result.length; i++) {
-        previousQueries.push(result[i].url)
-      }
-      console.log(previousQueries)
-      this.setState({
-        previousQueries: previousQueries
-      })
-    })
 
+  //! !
+
+  getPreviousQueries() {
+    fetch('/server/previousqueries', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log('we got lift off!', result);
+        const previousQueries = [];
+        for (let i = 0; i < result.length; i++) {
+          previousQueries.push(result[i].url);
+        }
+        console.log(previousQueries);
+        this.setState({
+          previousQueries,
+        });
+      });
   }
 
-  //!!
+  //! !
   componentDidMount() {
     // console.log("youre shit mounted!")
-    this.getPreviousQueries()
+    this.getPreviousQueries();
   }
 
   getTable() {
@@ -71,8 +70,8 @@ class MainContainer extends Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-      .then(res => res.json())
-      .then(result => {
+      .then((res) => res.json())
+      .then((result) => {
         // console.log("you got here and you got this: ", result)
         this.setState({
           data: result,
@@ -102,15 +101,14 @@ class MainContainer extends Component {
         this.setState({ tableNames: titlesArray });
       });
 
-    //add fetch post request here to add this query into query database
+    // add fetch post request here to add this query into query database
 
     fetch('/server/addquery', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-      // .then(res => console.log(res));
-
+      body: JSON.stringify(data),
+    });
+    // .then(res => console.log(res));
   }
 
   getTableNames2() {
@@ -120,12 +118,12 @@ class MainContainer extends Component {
     fetch('/server/tablenames', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then(res => res.json())
-      .then(result => {
+      .then((res) => res.json())
+      .then((result) => {
         const titlesArray = [];
-        result.forEach(el => {
+        result.forEach((el) => {
           if (el.tablename.slice(0, 4) !== 'sql_') {
             titlesArray.push(el.tablename);
           }
@@ -199,30 +197,30 @@ class MainContainer extends Component {
       body: JSON.stringify({ uri, queryString }),
     }).then(() => {
       console.log('hi');
-      this.reRender()
-      ; 
-});
+      this.reRender();
+    });
   }
 
-render(){
-    const inputStyle={margin:'10px', width: "500px",}
-    const inputTableStyle={margin:'10px', width: "100px",}
-    const tableOptions =[]
-    
-    //!!
-    const previousQueriesList =[]
+  render() {
+    const inputStyle = { margin: '10px', width: '500px' };
+    const inputTableStyle = { margin: '10px', width: '100px' };
+    const tableOptions = [];
+
+    //! !
+    const previousQueriesList = [];
     const prevQueryCheck = [];
 
-    for(let i=0; i<this.state.previousQueries.length; i++){
-      
-      if (this.state.previousQueries[i].includes('postgres://') && (!prevQueryCheck.includes(this.state.previousQueries[i]))){
-
-      prevQueryCheck.push(this.state.previousQueries[i])
-      previousQueriesList.push(<option key={i} value={this.state.previousQueries[i]} > {this.state.previousQueries[i]}</option>)
+    for (let i = 0; i < this.state.previousQueries.length; i++) {
+      if (this.state.previousQueries[i].includes('postgres://') && (!prevQueryCheck.includes(this.state.previousQueries[i]))) {
+        prevQueryCheck.push(this.state.previousQueries[i]);
+        previousQueriesList.push(<option key={i} value={this.state.previousQueries[i]}>
+          {' '}
+          {this.state.previousQueries[i]}
+                                 </option>);
       }
-
     }
-    //!!
+    //! !
+  }
 
   // END OF METHODS //
 
@@ -233,7 +231,7 @@ render(){
 
 
     for (let i = 0; i < this.state.tableNames.length; i++) {
-      tableOptions.push(<option key={`${i }_tableOptions`} value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>);
+      tableOptions.push(<option key={`${i}_tableOptions`} value={this.state.tableNames[i]}>{this.state.tableNames[i]}</option>);
     }
 
     let tableArray = [];
