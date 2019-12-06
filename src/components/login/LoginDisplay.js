@@ -8,15 +8,18 @@ const LogInDisplay = (props) => (
       <label htmlFor="email" className="form-label">
           Email:
       </label>
-      <input className="form-input" name="email" type="text" value={props.userDetails.email} onChange={props.handlechange} placeholder="email" required />
+      <input className="form-input" name="email" type="text" value={props.userDetails.username} onChange={props.handleChange} placeholder="Enter email" required />
       <label htmlFor="password" className="form-label">
           Password:
       </label>
-      <input className="form-input" name="password" type="password" value={props.userDetails.password} onChange={props.handlechange} placeholder="password" required />
-      <button type="login" onClick={props.action}>Login</button>
-      <button type="signup" onClick={props.action}>Sign Up</button>
+      <input className="form-input" name="password" type="password" value={props.userDetails.password} onChange={props.handleChange} placeholder="Enter password" required />
       <div>
-        <a href="http://localhost:3000/githubsignin" className="button">Login With Github</a>
+        <button className="button" type="login" onClick={props.action}>Login</button>
+        <span>or</span>
+        <button className="button" type="signup" onClick={props.action}>Sign Up</button>
+      </div>
+      <div className="github">
+        <a href="http://localhost:3000/githubsignin" className="login-with-git">Login With Github</a>
       </div>
     </div>
   </div>

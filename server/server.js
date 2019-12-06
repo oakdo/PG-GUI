@@ -62,6 +62,10 @@ app.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
 
+// app.get('/home', (req, res) => {
+//   res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
+// });
+
 // handles login integration with github
 app.get('/githubsignin', (req, res, next) => {
   console.log('I am trying to run now!');
@@ -153,6 +157,19 @@ app.get('/user', (req, res) => {
   );
 });
 
+//!!
+app.get('/server/previousqueries', 
+  connectionPoint.createConnection, file.getPrevious, (req, res) => {
+  return res.status(200).json(res.locals.previousqueries)
+})
+
+
+//!! 
+app.post('/server/addquery',
+  connectionPoint.createConnection, file.addQuery, (req, res) => {
+  return res.status(200).send("You have successfully added to your database")
+})
+
 app.post('/server/tablenames',
   connectionPoint.createConnection, file.getTableNames, (req, res) => res.status(200).json(res.locals.tableName));
 
@@ -162,6 +179,11 @@ app.post('/server/table',
 app.post('/server/update', connectionPoint.createConnection, file.update, (req, res) => res.status(200).json(res.locals.new));
 
 app.post('/server/create', connectionPoint.createConnection, file.create, (req, res) => res.status(200).json(res.locals.create));
+
+// createuser/signup end-point
+app.post('/server/signup', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).json({ success: 'Sign Up Successful!' }));
+
+app.post('/server/login', connectionPoint.createConnection, file.createUser, (req, res) => res.status(200).send());
 
 app.delete('/server/delete', connectionPoint.createConnection, file.delete, (req, res) => res.status(200).json(res.locals.delete));
 
