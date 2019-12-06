@@ -17,8 +17,12 @@ const reducer = (state = initialState, action) => {
       ...state,    
     }
 
+
+    //input cases here
+
+    //Default state is defined here
     default: return state;
-  }
+  } //this is the end of the switch statement
 }
 
 
