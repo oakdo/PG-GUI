@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import TableDisplay from '../components/TableDisplay';
+import ChartContainer from '../container/ChartContainer'
 import { connect } from 'react-redux';
 import { update } from '../actions/actions.js';
+
 
 const mapDispatchToProps = dispatch => ({
   update: () => dispatch(update())
@@ -17,13 +19,15 @@ class MainContainer extends Component {
       tableNames: [],
       isLoading: true,
       currentTable: '',
-      previousQueries: []
+      previousQueries: [],
+      isVisual: false
     };
     this.getTable = this.getTable.bind(this);
     this.getTableNames = this.getTableNames.bind(this);
     this.reRender = this.reRender.bind(this);
     this.deleteRow = this.deleteRow.bind(this);
     this.getPreviousQueries = this.getPreviousQueries.bind(this);
+    // this.inputvisual = this.inputvisual.bind(this);
   }
   // The following are METHODS used THROUGHOUT the APP /// 
   // There are only a few methods not contained in here. 
@@ -38,12 +42,12 @@ class MainContainer extends Component {
     })
     .then(res => res.json())
     .then(result => {
-      console.log("we got lift off!", result)
+      // console.log("we got lift off!", result)
       let previousQueries = [];
       for (let i = 0; i < result.length; i++) {
         previousQueries.push(result[i].url)
       }
-      console.log(previousQueries)
+      // console.log(previousQueries)
       this.setState({
         previousQueries: previousQueries
       })
@@ -111,6 +115,7 @@ class MainContainer extends Component {
 
   }
 
+  // displays database/table data from previous queries
   getTableNames2() {
     const uri = document.querySelector('#uri2').value;
     this.setState({ uri });
@@ -131,6 +136,10 @@ class MainContainer extends Component {
         this.setState({ tableNames: titlesArray });
       });
   }
+
+
+
+
 
   // This method is called throughout the APP to reRender after doing something
   reRender(newString) {
@@ -185,6 +194,14 @@ class MainContainer extends Component {
       });
   }
 
+  //Loads visual onto page
+  inputvisual() {
+    // document.getElementById("visual").append()
+    // visual.push(ChartContainer)
+    // console.log(this.tableOptions)
+    console.log("hello this is working! LOAD MY SHIT NOWWWWWW")
+  }
+
    // Delete row method
     deleteRow(){
         const PK = Object.keys(this.state.data[0])[0]
@@ -208,6 +225,7 @@ render(){
     const inputStyle={margin:'10px', width: "500px",}
     const inputTableStyle={margin:'10px', width: "100px",}
     const tableOptions =[]
+    const visual =[];
     
     //!!
     const previousQueriesList =[]
@@ -288,6 +306,18 @@ render(){
             </span>
         <h2>{this.state.currentTable}</h2>
         <div>{tableArray}</div>
+
+        <div>
+          <button onClick={() => {
+            this.setState({isVisual: !this.state.isVisual})
+          }
+            }>Load Visualization</button>
+        </div>
+
+
+        <div>
+          { this.state.isVisual ? <ChartContainer/> : null}
+        </div>
       </div>
     );
   }

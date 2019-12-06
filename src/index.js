@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import MainContainer from './container/MainContainer';
 import LoginContainer from './container/LoginContainer';
+import ChartContainer from './container/ChartContainer'
 import store from './store';
 import Header from './components/header/header';
 import './index.css';
@@ -17,8 +18,8 @@ ReactDOM.render(
     <Router>
       <div>
         <Header />
-        <Route exact path="/" component={LoginContainer} />
-        <Route path="/home" component={MainContainer} />
+        {/* <Route exact path="/" component={LoginContainer} /> */}
+        <Route exact path="/" component={MainContainer} />
       </div>
     </Router>
   </Provider>,
